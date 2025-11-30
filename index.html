@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학생 생활기록부 활동 뷰어</title>
+    <!-- Google Fonts: Pretendard or Noto Sans KR for premium Korean typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- SheetJS -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/logo.png" type="image/png">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo-area">
+                <img src="images/logo.png" alt="Logo" class="app-logo">
+                <h1>생기부 활동 뷰어</h1>
+            </div>
+            <div class="controls">
+                <label for="folderInput" class="file-upload-btn">
+                    <i class="fa-solid fa-folder-open"></i> 폴더 선택
+                </label>
+                <input type="file" id="folderInput" webkitdirectory directory multiple style="display: none;">
+                <button id="resetBtn" class="icon-btn" title="데이터 초기화"><i class="fa-solid fa-rotate-right"></i></button>
+                <button id="themeToggle" class="icon-btn" title="테마 변경"><i class="fa-solid fa-moon"></i></button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <aside class="sidebar">
+                <div class="filter-box">
+                    <select id="gradeFilter">
+                        <option value="">전체 학년</option>
+                        <option value="1">1학년</option>
+                        <option value="2">2학년</option>
+                        <option value="3">3학년</option>
+                    </select>
+                    <select id="classFilter">
+                        <option value="">전체 반</option>
+                        <!-- Options will be populated dynamically or just 1-15 -->
+                        <option value="1">1반</option>
+                        <option value="2">2반</option>
+                        <option value="3">3반</option>
+                        <option value="4">4반</option>
+                        <option value="5">5반</option>
+                        <option value="6">6반</option>
+                        <option value="7">7반</option>
+                        <option value="8">8반</option>
+                        <option value="9">9반</option>
+                        <option value="10">10반</option>
+                        <option value="11">11반</option>
+                        <option value="12">12반</option>
+                    </select>
+                </div>
+                <div class="search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="이름 검색">
+                </div>
+                <div class="student-list" id="studentList">
+                    <!-- Student items will be injected here -->
+                    <div class="empty-state">폴더를 선택해주세요.</div>
+                </div>
+            </aside>
+
+            <section class="content-area" id="contentArea">
+                <div class="welcome-screen">
+                    <i class="fa-solid fa-folder-tree"></i>
+                    <h2>활동 기록을 불러오세요</h2>
+                    <p>상단의 '폴더 선택' 버튼을 눌러 엑셀 파일이 있는 폴더를 선택해주세요.</p>
+                </div>
+                <!-- Student Detail View will be injected here -->
+            </section>
+        </main>
+        
+        <footer class="app-footer">
+            &copy; 2025 차형준. All rights reserved.
+        </footer>
+    </div>
+
+    <!-- Templates -->
+    <template id="student-detail-template">
+        <div class="student-header">
+            <div class="student-info">
+                <h2 class="student-name"></h2>
+                <span class="student-id badge"></span>
+            </div>
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="autonomy">자율/진로 활동</button>
+                <button class="tab-btn" data-tab="volunteer">봉사 활동</button>
+            </div>
+        </div>
+        
+        <div class="tab-content active" id="tab-autonomy">
+            <div class="split-view">
+                <div class="activity-list-section">
+                    <h3>활동 목록</h3>
+                    <div class="activity-list" id="autonomyList"></div>
+                </div>
+                <div class="editor-section">
+                    <h3>종합 작성</h3>
+                    <div class="editor-toolbar">
+                        <span class="byte-counter">0 / 1500 bytes</span>
+                        <button class="action-btn copy-summary-btn"><i class="fa-regular fa-copy"></i> 복사</button>
+                        <button class="action-btn save-summary-btn primary"><i class="fa-regular fa-floppy-disk"></i> 저장</button>
+                    </div>
+                    <textarea class="summary-editor" placeholder="여기에 내용을 작성하거나 왼쪽의 활동을 추가하여 편집하세요."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="tab-volunteer">
+            <div class="activity-list-section full-width">
+                <h3>봉사 활동 목록</h3>
+                <div class="activity-list" id="volunteerList"></div>
+            </div>
+        </div>
+    </template>
+
+    <script src="js/data-manager.js"></script>
+    <script src="js/excel-parser.js"></script>
+    <script src="js/ui-renderer.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
